@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>${yearID} ${teamName}</title>
+  <meta charset="utf-8" />
+
+  <script src="/static/jquery.js"></script>
+  <script src="/static/runthis.js"></script>
+
+</head>
+<body>
+
+<form action="/team" method="get">
+  <select name="yearID" id="yearID">
+    <option>Select year</option>
+    <option tal:repeat="year years">${year}</option>
+  </select>
+
+  <select name="teamID" id="teamID">
+    <option>Select team</option>
+  </select>
+
+  <input type="hidden" name="teamIDcurrent" value="${teamID}" />
+  <input type="hidden" name="yearIDcurrent" value="${yearID}" />
+</form>
+
+
+<pre>${output}</pre>
+
+</body>
+</html>
