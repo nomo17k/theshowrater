@@ -14,7 +14,7 @@ YEARLIST = range(2011, 1869, -1)
 def teamlist(y, db):
     res = find_teams_in_year(y, db)
     res = [(o[0], o[2]) for o in res]
-    return res
+    return sorted(res, key=lambda x: x[1])
     
 
 @subscriber(NewRequest)
