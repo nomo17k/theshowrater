@@ -4,10 +4,6 @@ from pyramid.config import Configurator
 
 
 def dbsetting():
-    # this is for local
-    #db = {'db': 'lahman591',
-    #      'read_default_file': '/'.join([os.environ["HOME"],
-    #                                     ".my.cnf"]) }
     DOTCLOUD_ENV_FILE = "/home/dotcloud/environment.json"
     if os.path.exists(DOTCLOUD_ENV_FILE):
         with open(DOTCLOUD_ENV_FILE) as f:
@@ -17,12 +13,16 @@ def dbsetting():
             passwd = env['DOTCLOUD_DB_MYSQL_PASSWORD']
             port = env['DOTCLOUD_DB_MYSQL_PORT']
 
-        db = {'db': 'lahman591',
-              'host': host,
+        db = {'host': host,
               'user': user,
               'passwd': passwd,
               'port': port}
+    else:
+        # this is for local
+        db = {'read_default_file': '/'.join([os.environ.get('HOME', '~'),
+                                             ".my.cnf"]) }
 
+    db['db'] = 'lahman591'
     return db
 
 
