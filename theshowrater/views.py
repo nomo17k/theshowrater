@@ -60,7 +60,12 @@ def prbt_view(request):
     if len(pids):
         outs = []
         for i, pid in enumerate(pids):
-            pd = PlayerData(pid, currentyear=yearID, yweight={}, db=request.db)
+            try:
+                pd = PlayerData(pid, currentyear=yearID, yweight={},
+                                db=request.db)
+            except NoPlayerFoundError:
+                outs.append('playerID {:s} not found in database'
+                            .format(pid))
             if i == 0:
                 outs.append(pd.attr.csvheader)
             outs.append(pd.attr.csv)
