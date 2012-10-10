@@ -2,3 +2,8 @@ www:
     type: python
 db:
     type: mysql
+
+
+python:
+    config:
+        python_version: 2.7
