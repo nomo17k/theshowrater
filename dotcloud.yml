@@ -20,8 +20,9 @@ python:
         python_version: 2.7
 
 
-www:
-    type: python
+#www:
+#    type: python
+
 db:
     type: mysql
 
