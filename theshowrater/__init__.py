@@ -11,7 +11,7 @@ def dbsetting():
             host = env['DOTCLOUD_DB_MYSQL_HOST']
             user = env['DOTCLOUD_DB_MYSQL_LOGIN']
             passwd = env['DOTCLOUD_DB_MYSQL_PASSWORD']
-            port = env['DOTCLOUD_DB_MYSQL_PORT']
+            port = int(env['DOTCLOUD_DB_MYSQL_PORT'])
 
         db = {'host': host,
               'user': user,
