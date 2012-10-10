@@ -6,7 +6,7 @@ from pyramid.view import view_config
 from pyramid.events import NewRequest
 from pyramid.events import subscriber
 from theshowutil.driver import find_teams_in_year, find_players_in_team
-from theshowutil.playerdata import PlayerData
+from theshowutil.playerdata import PlayerData, NoPlayerFoundError
 
 
 YEARLIST = range(2011, 1869, -1)
