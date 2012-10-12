@@ -3,6 +3,7 @@
 <head>
   <title>${yearID} ${teamName}</title>
   <meta charset="utf-8" />
+  <link rel="shortcut icon" href="/static/favicon.ico">
 
   <script src="/static/jquery.js"></script>
   <script src="/static/runthis.js"></script>
