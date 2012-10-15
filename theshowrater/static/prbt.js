@@ -1,65 +1,65 @@
-$(function()
+$(function() {
+
+var update_team_list = function(yearID, teamID_target, teamID_current)
 {
-
-  function get_teams(current_team)
-  {
-    var yearID = $("#yearID").val();
-    if (yearID == "Select year") {
-      $("#teamID")
-        .empty()
-        .append("<option>Select team</option>");
-      return;  
-    }
-
-    $.getJSON('/update.teams?y='+ yearID,
-      function(data) {
-        var target = $('#teamID');
-        target.empty();
-        target.append("<option>Select team</option>");
-        $.each(data,
-           function(key, val) {
-             var teamID = val[0];
-             var teamname = val[1];
-             target.append('<option value="'+teamID+'">'
-                           + teamname + '</option>');
-             
-           });
-        target.val(current_team).attr("selected", true);
-      });
-  };
-
-
-  function get_prbt_update()
-  {
-    var target = $('#displayfield pre');
-    target.empty();
-    target.append("<img src='/static/ajax-loader.gif' />");
-
-    var yearID = $("#yearID").val();
-    var teamID = $("#teamID").val();
-
-    $.getJSON('/updates.prbt.json?yearID='+yearID+'&teamID='+teamID,
-      function(data)
-      {
-        $.each(data,
-          function(key, val)
-          {
-            target.empty();
-            target.append(val);
-          });
-      });
+  if (yearID.match(/^\d{4}$/)) {
+    $.getJSON('/json.get_teams?yearID=' + yearID,
+              function(data) {
+                var t = $(teamID_target);
+                t.empty();
+                t.append("<option>Select team</option>");
+                $.each(data,
+                       function(key, val) {
+                         var teamID = val[0];
+                         var teamname = val[1];
+                         t.append('<option value="'+ teamID +'">'
+                                  + teamname + '</option>');
+                         
+                       });
+                t.val(teamID_current).attr("selected", true);
+                t.removeAttr('disabled');
+              });
   }
-
-  // pre-select the form if a team is loaded.
-  if ($("input[name=yearIDcurrent]").length) {
-    var ycurrent = $("input[name=yearIDcurrent]").val();
-    $("#yearID").val(ycurrent).attr("selected", true);
-    var tcurrent = $("input[name=teamIDcurrent]").val();
-    get_teams(tcurrent);
+  else {
+    $(teamID_target)
+      .attr('disabled', 'disabled')
+      .empty()
+      .append("<option>Select team</option>");
+    return;  
   }
+};
 
-  // attach events.
-  $("#yearID").change(function() { get_teams(); });
-  $("#teamID").change(function() { get_prbt_update(); });
+
+var get_prbt_update = function()
+{
+  var target = $('#displayfield pre');
+  target.empty();
+  target.append("<img src='/static/ajax-loader.gif' />");
+
+  var yearID = $("#yearID").val();
+  var teamID = $("#teamID").val();
+
+  $.getJSON('/json.update_prbt?yearID='+yearID+'&teamID='+teamID,
+            function(data)
+            {
+              $.each(data,
+                     function(key, val)
+                     {
+                       target.empty();
+                       target.append(val);
+                     });
+            });
+};
+
+    
+$("#yearID")
+      .change(function()
+              {
+                var yearID = $("#yearID").val();
+                update_team_list(yearID, $("#teamID"));
+              });
+
+$("#teamID")
+      .change(function() { get_prbt_update(); });
 
 });

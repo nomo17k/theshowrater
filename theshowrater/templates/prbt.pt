@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>${yearID} ${teamName} - theShowRater</title>
+  <title>Player Ratings by Team - theShowRater</title>
   <meta charset="utf-8" />
   <link rel="shortcut icon" href="/static/favicon.ico">
 
   <script src="/static/jquery.js"></script>
+  <script src="/static/ajax_global.js"></script>
   <script src="/static/prbt.js"></script>
 
 </head>
 <body>
 
-<form action="/team" method="get">
+<form>
   <select name="yearID" id="yearID">
     <option>Select year</option>
-    <option tal:repeat="year years">${year}</option>
+    <option tal:repeat="year years"
+            tal:attributes="value year">${year}</option>
   </select>
 
   <select name="teamID" id="teamID">
     <option>Select team</option>
   </select>
-
-  <input type="hidden" name="teamIDcurrent" value="${teamID}" />
-  <input type="hidden" name="yearIDcurrent" value="${yearID}" />
 </form>
 
 <div id="displayfield">

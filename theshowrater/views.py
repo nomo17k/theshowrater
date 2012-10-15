@@ -11,6 +11,7 @@ from theshowutil.playerdata import PlayerData, NoPlayerFoundError
 
 YEARLIST = range(2011, 1869, -1)
 
+
 def teamlist(y, db):
     res = find_teams_in_year(y, db)
     res = [(o[0], o[2]) for o in res]
@@ -35,7 +36,6 @@ def prbt_output(yearID, teamID, db):
     return '\n'.join(outs)
 
 
-
 @subscriber(NewRequest)
 def new_request_subscriber(event):
     request = event.request
@@ -50,19 +50,19 @@ def close_db_connection(request):
 
 @view_config(route_name="home", renderer="templates/home.pt")
 def home_view(request):
-    return {'years': YEARLIST}
+    return {}
 
 
-@view_config(renderer="json", name="update.teams")
-def update_teams_view(s, response):
-    y = response.GET.get('y')
+@view_config(renderer="json", name="json.get_teams")
+def json_get_teams(s, response):
+    y = response.GET.get('yearID')
     if y is None:
         return HTTPBadRequest()
     return teamlist(y, response.db)
 
 
-@view_config(renderer="json", name="updates.prbt.json")
-def update_prbt_json(s, response):
+@view_config(renderer="json", name="json.update_prbt")
+def json_update_prbt(s, response):
     yearID = response.GET.get('yearID')
     teamID = response.GET.get('teamID')
     if yearID is None or teamID is None:
@@ -75,21 +75,4 @@ def update_prbt_json(s, response):
 
 @view_config(route_name="prbt", renderer="templates/prbt.pt")
 def prbt_view(request):
-    d = request.matchdict
-    matchobj = re.match(r"^[\w][\w\d][\w\d]$", d['teamID'])
-    if matchobj:
-        teamID = matchobj.group()
-    else:
-        return HTTPBadRequest()
-    matchobj = re.match(r"^[12][089]\d\d$", d['yearID'])
-    if matchobj:
-        yearID = matchobj.group()
-    else:
-        return HTTPBadRequest()
-
-    out = prbt_output(yearID, teamID, request.db)
-    if out is None:
-        return HTTPBadRequest()
-
-    return {'output': out, 'yearID': yearID, 'teamName': teamID,
-            'years': YEARLIST, 'teamID': teamID}#, 'teams': teams}
+    return {'output': '', 'years': YEARLIST}
